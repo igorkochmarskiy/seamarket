@@ -1,4 +1,4 @@
 # IntelliJ
-out/
+/out/production
 /target
 /.idea

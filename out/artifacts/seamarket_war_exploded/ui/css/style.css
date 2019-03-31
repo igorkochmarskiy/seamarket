@@ -1,0 +1,31 @@
+td{
+    text-align: center;
+}
+
+table {
+    width: 100%;
+
+}
+
+th {
+    height: 50px;
+}
+
+.noItemCell{
+    color: red;
+}
+
+#items, #buyItems
+{
+    position: relative;
+    margin-left: 25%;
+    margin-right: 25%;
+    padding-bottom: 20px;
+
+}
+#toBasket, #buy{
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+
+}
