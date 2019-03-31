@@ -1,0 +1,23 @@
+package web;
+
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+import static web.WebConstants.STATIC_FILES_DIRECTORY;
+
+@WebServlet(name = "shop", urlPatterns = "/shop")
+public class ShopServlet extends HttpServlet {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+    }
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        ServletContext sc = getServletContext();
+        sc.getRequestDispatcher(STATIC_FILES_DIRECTORY + "/shop.html").forward(request, response);
+    }
+}
