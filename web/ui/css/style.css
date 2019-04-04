@@ -4,7 +4,7 @@ td{
 
 table {
     width: 100%;
-
+    border: 1px solid black;
 }
 
 th {
@@ -15,17 +15,13 @@ th {
     color: red;
 }
 
-#items, #buyItems
+div#items, div#buyItems
 {
+    display:table;
     position: relative;
-    margin-left: 25%;
-    margin-right: 25%;
-    padding-bottom: 20px;
+    margin: auto;
 
 }
 #toBasket, #buy{
-    position: absolute;
-    bottom: 0px;
-    right: 0px;
-
+    float:right
 }

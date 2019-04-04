@@ -45,6 +45,7 @@
         <% }
 }
 %>
+</table>
     <button id="buy" type="button">Buy</button>
 </div>
     <script>

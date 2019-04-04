@@ -41,23 +41,25 @@ public class CatalogueServiceImpl implements CatalogueService {
     }
 
     private void updateNow() {
-
-        try {
-            this.items = Files.lines(Paths.get(CATALOGUE_PATH))
-                    .flatMap(x -> {
-                        String[] fields = x.split(",");
-                        if (fields.length == 3) {
-                            try {
-                                return Stream.of(new Item(fields[0].trim(), fields[1].trim(), Double.parseDouble(fields[2].trim())));
-                            } catch (Exception ex) {
+        File catalogueFile = new File(CATALOGUE_PATH);
+        if (catalogueFile.exists()) {
+            try {
+                this.items = Files.lines(catalogueFile.toPath())
+                        .flatMap(x -> {
+                            String[] fields = x.split(",");
+                            if (fields.length == 3) {
+                                try {
+                                    return Stream.of(new Item(fields[0].trim(), fields[1].trim(), Double.parseDouble(fields[2].trim())));
+                                } catch (Exception ex) {
+                                    return Stream.empty();
+                                }
+                            } else {
                                 return Stream.empty();
                             }
-                        } else {
-                            return Stream.empty();
-                        }
-                    }).collect(Collectors.toList());
-        } catch (IOException ex) {
-            ex.printStackTrace();
+                        }).collect(Collectors.toList());
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
         }
     }
 
@@ -70,24 +72,27 @@ public class CatalogueServiceImpl implements CatalogueService {
         }
     }
 
-    private byte[] calculateDigest()  {
-        try(InputStream fis =  new FileInputStream(CATALOGUE_PATH)) {
+    private byte[] calculateDigest() {
+        File catalogieFile = new File(CATALOGUE_PATH);
+        if (catalogieFile.exists()) {
+            try (InputStream fis = new FileInputStream(catalogieFile)) {
 
-            byte[] buffer = new byte[1024];
-            MessageDigest complete = MessageDigest.getInstance("MD5");
-            int numRead;
+                byte[] buffer = new byte[1024];
+                MessageDigest complete = MessageDigest.getInstance("MD5");
+                int numRead;
 
-            do {
-                numRead = fis.read(buffer);
-                if (numRead > 0) {
-                    complete.update(buffer, 0, numRead);
-                }
-            } while (numRead != -1);
-            return complete.digest();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+                do {
+                    numRead = fis.read(buffer);
+                    if (numRead > 0) {
+                        complete.update(buffer, 0, numRead);
+                    }
+                } while (numRead != -1);
+                return complete.digest();
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         return new byte[2];
     }

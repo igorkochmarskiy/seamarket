@@ -27,7 +27,7 @@ public class BasketServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<String> articles = new ArrayList<>(Arrays.asList(request.getParameter("items").split(",")));
-        Map<String, Item> catalogueItems = catalogue.getItems().stream()
+        Map<String, Item> catalogueItems = catalogue.getItems().stream().distinct()
                 .collect(Collectors.toMap(Item::getArticle, item -> item));
             List<Item> items = articles.stream().map(article -> {
             Item item = catalogueItems.get(article);

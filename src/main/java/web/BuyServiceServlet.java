@@ -17,10 +17,10 @@ import java.util.List;
 public class BuyServiceServlet extends HttpServlet {
     @Inject
     private OrderService orderService;
+    private Gson gson = new Gson();
 
     private List<String> retrieveArticlesAsJson(HttpServletRequest request) throws IOException {
         try(BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream()))) {
-            Gson gson = new Gson();
             String json = "";
             if (br != null) {
                 json = br.readLine();

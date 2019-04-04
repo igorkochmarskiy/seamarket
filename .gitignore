@@ -1,4 +1,5 @@
 # IntelliJ
-/out/production
+/out
 /target
 /.idea
+/target
