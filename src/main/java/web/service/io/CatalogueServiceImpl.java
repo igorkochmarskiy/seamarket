@@ -27,11 +27,11 @@ public class CatalogueServiceImpl implements CatalogueService {
     /**
      * Catalogue hash-digest
      */
-    private byte[] digest = new byte[1];
+    private volatile byte[] digest = new byte[1];
     /**
      * List of items that represents catalogue.
      */
-    private List<Item> items = new ArrayList<>();
+    private volatile List<Item> items = new ArrayList<>();
     private ScheduledExecutorService scheduledExecutorService;
 
     public CatalogueServiceImpl() {
@@ -40,7 +40,7 @@ public class CatalogueServiceImpl implements CatalogueService {
     /**
      * Initializes catalogue updates.
      */
-    public void init() {
+    public synchronized void init() {
         if (scheduledExecutorService == null) {
             scheduledExecutorService = Executors.newScheduledThreadPool(1);
             this.update();
