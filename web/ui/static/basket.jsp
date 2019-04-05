@@ -13,66 +13,63 @@
 </head>
 <body>
 <div id="buyItems">
-<table>
-    <th>ARTICLE</th>
-    <th>NAME</th>
-    <th>PRICE</th>
-<%
-        List<Item> items = (ArrayList) request.getAttribute("items");
-        for (int i = 0; i < items.size(); i++) {
-            Item item = items.get(i);
-            if(item.getPrice()>=0){
-    %>
-    <tr>
-        <td class="articleCell"><%=item.getArticle()%>
-        </td>
-        <td><%=item.getName()%>
-        </td>
-        <td><%=item.getPrice()%>
-        </td>
-    </tr>
+    <table>
+        <th>ARTICLE</th>
+        <th>NAME</th>
+        <th>PRICE</th>
         <%
-        }else{
-    %>
-    <tr>
-        <td class="noItemCell"><%=item.getArticle()%>
-        </td>
-        <td>
-        </td>
-        <td>
-        </td>
-    </tr>
+            List<Item> items = (ArrayList) request.getAttribute("items");
+            for (int i = 0; i < items.size(); i++) {
+                Item item = items.get(i);
+                if (item.getPrice() >= 0) {
+        %>
+        <tr>
+            <td class="articleCell"><%=item.getArticle()%>
+            </td>
+            <td><%=item.getName()%>
+            </td>
+            <td><%=item.getPrice()%>
+            </td>
+        </tr>
+        <%
+        } else {
+        %>
+        <tr>
+            <td class="noItemCell"><%=item.getArticle()%>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+        </tr>
         <% }
-}
-%>
-</table>
+        }
+        %>
+    </table>
     <button id="buy" type="button">Buy</button>
 </div>
-    <script>
-        $("#buy").on("click", function () {
-            var articles = $('.articleCell').map(function(){
-                return $.trim($(this).text());
-            }).get();
+<script>
+    $("#buy").on("click", function () {
+        var articles = $('.articleCell').map(function () {
+            return $.trim($(this).text());
+        }).get();
 
-            $.ajax({
-                url: "/seamarket/buyService ",
-                type: 'POST',
-                dataType: 'json',
-                data: JSON.stringify(articles),
-                contentType: 'application/json',
-                mimeType: 'application/json'
-            }).always(function (jqXHR) {
-                if(jqXHR.status==201){
-                    window.location.href = '/seamarket/shop/success';
-                }else{
-                    window.location.href = '/seamarket/shop/failure';
-                }
-            });
-
-
-
+        $.ajax({
+            url: "/seamarket/buyService ",
+            type: 'POST',
+            dataType: 'json',
+            data: JSON.stringify(articles),
+            contentType: 'application/json',
+            mimeType: 'application/json'
+        }).always(function (jqXHR) {
+            if (jqXHR.status == 201) {
+                window.location.href = '/seamarket/shop/success';
+            } else {
+                window.location.href = '/seamarket/shop/failure';
+            }
         });
-    </script>
+    });
+</script>
 
 </body>
 </html>

@@ -18,17 +18,29 @@ import java.util.stream.Stream;
 
 import static web.WebConstants.CATALOGUE_PATH;
 
+/**
+ * This class is a catalogue that allows to get a list of items.
+ * It periodically updates internal catalogue from file
+ */
 @ApplicationScoped
 public class CatalogueServiceImpl implements CatalogueService {
+    /**
+     * Catalogue hash-digest
+     */
     private byte[] digest = new byte[1];
+    /**
+     * List of items that represents catalogue.
+     */
     private List<Item> items = new ArrayList<>();
     private ScheduledExecutorService scheduledExecutorService;
 
     public CatalogueServiceImpl() {
     }
 
+    /**
+     * Initializes catalogue updates.
+     */
     public void init() {
-
         if (scheduledExecutorService == null) {
             scheduledExecutorService = Executors.newScheduledThreadPool(1);
             this.update();
@@ -40,6 +52,9 @@ public class CatalogueServiceImpl implements CatalogueService {
         return Collections.unmodifiableList(items);
     }
 
+    /**
+     * Updates the catalogue stored in memory with values from a file.
+     */
     private void updateNow() {
         File catalogueFile = new File(CATALOGUE_PATH);
         if (catalogueFile.exists()) {
@@ -64,7 +79,6 @@ public class CatalogueServiceImpl implements CatalogueService {
     }
 
     private void update() {
-
         byte[] newDigest = calculateDigest();
         if (!Arrays.equals(this.digest, newDigest)) {
             this.digest = newDigest;
@@ -72,15 +86,16 @@ public class CatalogueServiceImpl implements CatalogueService {
         }
     }
 
+    /**
+     * Сomputes the hash-digest of the catalogue-file.
+     */
     private byte[] calculateDigest() {
         File catalogieFile = new File(CATALOGUE_PATH);
         if (catalogieFile.exists()) {
             try (InputStream fis = new FileInputStream(catalogieFile)) {
-
                 byte[] buffer = new byte[1024];
                 MessageDigest complete = MessageDigest.getInstance("MD5");
                 int numRead;
-
                 do {
                     numRead = fis.read(buffer);
                     if (numRead > 0) {
@@ -88,9 +103,7 @@ public class CatalogueServiceImpl implements CatalogueService {
                     }
                 } while (numRead != -1);
                 return complete.digest();
-            } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
+            } catch (NoSuchAlgorithmException | IOException e) {
                 e.printStackTrace();
             }
         }

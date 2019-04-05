@@ -14,10 +14,23 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+/**
+ * This class is service that saves orders.
+ */
 @ApplicationScoped
 public class OrderServiceImpl implements OrderService {
     @Inject
     private CatalogueService catalogue;
+
+    /**
+     *  Tries to save orders.
+     *  Checks if there are products with such article and
+     *  if the catalog does not contain any product with one of those, does not save any of them.
+     *
+     * @param articles the list of items articles
+     * @return whether orders are stored
+     */
     @Override
     public boolean storeItemsIfPresent(List<String> articles) throws FileNotFoundException {
         Map<String, Item> catalogueItems = catalogue.getItems().stream().distinct()
